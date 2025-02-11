@@ -6,6 +6,6 @@ class Settings(BaseSettings):
     ALPACA_BASE_URL: str
 
     class Config:
-        env_file = ".env"  # Specify the environment file
+        env_file = ".env"
 
 settings = Settings()
