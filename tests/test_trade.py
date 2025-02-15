@@ -14,14 +14,13 @@ def mock_alpaca_client():
 
 @pytest.fixture(scope="module", autouse=True)
 def override_settings_dependency(mock_alpaca_client):
-    def mock_get_settings():
-        return MockSettings(
-            ALPACA_API_KEY="test_api_key",
-            ALPACA_SECRET_KEY="test_secret_key",
-            ALPACA_BASE_URL="https://paper-api.alpaca.markets",
-        )
+    from app.config.settings import _settings
 
-    app.dependency_overrides[get_settings] = mock_get_settings
+    _settings = MockSettings(
+        ALPACA_API_KEY="test_api_key",
+        ALPACA_SECRET_KEY="test_secret_key",
+        ALPACA_BASE_URL="https://paper-api.alpaca.markets",
+    )
 
     def mock_get_alpaca_client():
         return mock_alpaca_client
@@ -29,6 +28,7 @@ def override_settings_dependency(mock_alpaca_client):
     app.dependency_overrides[get_alpaca_client] = mock_get_alpaca_client
     yield
     app.dependency_overrides.clear()
+
 
 
 client = TestClient(app)
