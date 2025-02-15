@@ -1,15 +1,12 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from app.models.trade_request import TradeRequest
-from app.utils.alpaca_client import alpaca_client
+from app.utils.alpaca_client import get_alpaca_client
 import traceback
 
 router = APIRouter()
 
 @router.post("/trade")
-def execute_trade(trade: TradeRequest):
-    """
-    Execute a trade: Buy or Sell
-    """
+def execute_trade(trade: TradeRequest, alpaca_client = Depends(get_alpaca_client)):
     try:
         order = alpaca_client.submit_order(
             symbol=trade.symbol,
