@@ -48,7 +48,7 @@ jobs:
       - name: Set image tag
         id: image-tag
         run: |
-          DATE=$(date +%Y%m%d)
+          DATE=$(date +%Y.%m.%d)
           REPO_NAME=$(basename "$GITHUB_REPOSITORY" | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-9-_')
           if [[ $GITHUB_REF == "refs/heads/main" ]]; then
             IMAGE_TAG="maorbar/${REPO_NAME}:${DATE}"
