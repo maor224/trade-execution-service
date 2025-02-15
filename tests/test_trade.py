@@ -3,6 +3,8 @@ from unittest.mock import MagicMock
 import pytest
 from fastapi.testclient import TestClient
 from app.main import app
+from app.models.trade_request import TradeRequest
+from app.models.enums import TradeSide
 from app.utils.alpaca_client import get_alpaca_client
 
 client = TestClient(app)
@@ -24,18 +26,15 @@ def mock_alpaca_client():
     return mock_client
 
 @pytest.fixture(scope="module", autouse=True)
-def override_alpaca_client_dependency(mock_alpaca_client):
+def override_dependencies(mock_alpaca_client):
     app.dependency_overrides[get_alpaca_client] = lambda: mock_alpaca_client
     yield
     app.dependency_overrides.clear()
 
 def test_trade_endpoint(mock_alpaca_client):
-    payload = {
-        "symbol": "AAPL",
-        "qty": 1,
-        "side": "buy"
-    }
-    response = client.post("/trade", json=payload)
+    trade_request = TradeRequest(symbol="AAPL", qty=1, side=TradeSide.BUY)
+
+    response = client.post("/api/trade", json=trade_request.model_dump())
     assert response.status_code == 200
     assert response.json()["order"] == {"id": "test_order_id"}
 

@@ -6,7 +6,7 @@ import traceback
 router = APIRouter()
 
 @router.post("/trade")
-def execute_trade(trade: TradeRequest, alpaca_client = Depends(get_alpaca_client)):
+def execute_trade(trade: TradeRequest, alpaca_client=Depends(get_alpaca_client)):
     try:
         order = alpaca_client.submit_order(
             symbol=trade.symbol,
