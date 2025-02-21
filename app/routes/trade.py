@@ -1,9 +1,12 @@
-from fastapi import APIRouter, Depends
-from app.models.trade_request import TradeRequest
-from app.utils.alpaca_client import get_alpaca_client
 import traceback
 
+from fastapi import APIRouter, Depends
+
+from app.models.trade_request import TradeRequest
+from app.utils.alpaca_client import get_alpaca_client
+
 router = APIRouter()
+
 
 @router.post("/trade")
 def execute_trade(trade: TradeRequest, alpaca_client=Depends(get_alpaca_client)):
@@ -13,7 +16,7 @@ def execute_trade(trade: TradeRequest, alpaca_client=Depends(get_alpaca_client))
             qty=trade.qty,
             side=trade.side.value,
             type="market",
-            time_in_force="gtc"
+            time_in_force="gtc",
         )
         return {"message": "Order placed successfully", "order": order._raw}
     except Exception as e:

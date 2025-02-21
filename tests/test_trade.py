@@ -1,10 +1,11 @@
 from unittest.mock import MagicMock
+
 import pytest
 from fastapi.testclient import TestClient
-from app.config.settings import get_settings
+
 from app.main import app
 from app.utils.alpaca_client import get_alpaca_client
-from tests.mock_settings import MockSettings
+
 
 @pytest.fixture(scope="module")
 def mock_alpaca_client():
@@ -12,16 +13,9 @@ def mock_alpaca_client():
     mock_client.submit_order.return_value = MagicMock(_raw={"id": "test_order_id"})
     return mock_client
 
+
 @pytest.fixture(scope="module", autouse=True)
 def override_settings_dependency(mock_alpaca_client):
-    from app.config.settings import _settings
-
-    _settings = MockSettings(
-        ALPACA_API_KEY="test_api_key",
-        ALPACA_SECRET_KEY="test_secret_key",
-        ALPACA_BASE_URL="https://paper-api.alpaca.markets",
-    )
-
     def mock_get_alpaca_client():
         return mock_alpaca_client
 
@@ -30,20 +24,17 @@ def override_settings_dependency(mock_alpaca_client):
     app.dependency_overrides.clear()
 
 
-
 client = TestClient(app)
+
 
 def test_root_endpoint():
     response = client.get("/")
     assert response.status_code == 200
     assert response.json() == {"message": "Trade Execution Service is up and running"}
 
+
 def test_trade_endpoint(mock_alpaca_client):
-    payload = {
-        "symbol": "AAPL",
-        "qty": 1,
-        "side": "buy"
-    }
+    payload = {"symbol": "AAPL", "qty": 1, "side": "buy"}
 
     response = client.post("/api/trade", json=payload)
 

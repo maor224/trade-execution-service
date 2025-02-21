@@ -1,5 +1,7 @@
-from app.config.settings import get_settings
 from alpaca_trade_api import REST
+
+from app.config.settings import get_settings
+
 
 def get_alpaca_client():
     settings = get_settings()

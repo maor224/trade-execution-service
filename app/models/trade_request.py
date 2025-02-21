@@ -1,5 +1,7 @@
 from pydantic import BaseModel, Field
+
 from app.models.enums import TradeSide
+
 
 class TradeRequest(BaseModel):
     symbol: str = Field(..., example="AAPL")
