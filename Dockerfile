@@ -9,7 +9,8 @@ COPY pyproject.toml poetry.lock /app/
 RUN poetry config virtualenvs.create false && \
     poetry install --without dev --no-interaction --no-ansi
 
-COPY . /app/
+RUN rm -rf poetry.lock pyproject.toml
+COPY ./app /app/
 
 EXPOSE 8000
 
