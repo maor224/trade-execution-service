@@ -28,7 +28,7 @@ jobs:
           poetry install --no-root
 
       - name: Run flake8
-        run: flake8 .
+        run: flake8 . --max-line-length=100
 
       - name: Run Bandit Security Checks
         run: bandit -r .
