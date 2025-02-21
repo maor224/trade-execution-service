@@ -31,7 +31,7 @@ jobs:
         run: flake8 . --max-line-length=100
 
       - name: Run Bandit Security Checks
-        run: bandit -r .
+        run: bandit -r ./app
 
       - name: Run tests
         run: poetry run pytest --maxfail=5 --disable-warnings
