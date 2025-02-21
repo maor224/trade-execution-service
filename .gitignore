@@ -49,6 +49,7 @@ coverage.xml
 
 # Environment Variables
 .env
+.venv
 
 # IDEs
 .vscode/
