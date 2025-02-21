@@ -9,42 +9,39 @@ on:
       - main
 
 jobs:
-  test-and-build:
+  test-and-analyze:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Python 3.13
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.13'
 
-      # Install Poetry
-      - name: Install Poetry
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-
-      # Install dependencies with Poetry
       - name: Install dependencies
-        run: poetry install --no-root
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry flake8 bandit
+          poetry install --no-root
 
-      # Run tests with pytest
+      - name: Run flake8
+        run: flake8 .
+
+      - name: Run Bandit Security Checks
+        run: bandit -r .
+
       - name: Run tests
         run: poetry run pytest --maxfail=5 --disable-warnings
 
-      # Log in to Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Get current date and commit hash
       - name: Set image tag
         id: image-tag
         run: |
@@ -58,7 +55,6 @@ jobs:
           fi
           echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
-      # Build and push Docker image
       - name: Build and push Docker image
         run: |
           docker build -t ${{ env.IMAGE_TAG }} .
