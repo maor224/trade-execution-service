@@ -4,7 +4,7 @@ WORKDIR /home/service
 
 RUN pip install poetry
 
-COPY pyproject.toml poetry.lock /app/
+COPY pyproject.toml poetry.lock /home/service/
 
 RUN poetry config virtualenvs.create false && \
     poetry install --without dev --no-interaction --no-ansi
