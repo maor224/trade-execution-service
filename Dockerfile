@@ -1,16 +1,16 @@
 FROM python:3.13.2-slim
 
-WORKDIR /app
+WORKDIR /home/service
 
 RUN pip install poetry
 
-COPY pyproject.toml poetry.lock /app/
+COPY pyproject.toml poetry.lock /home/service/
 
 RUN poetry config virtualenvs.create false && \
     poetry install --without dev --no-interaction --no-ansi
 
 RUN rm -rf poetry.lock pyproject.toml
-COPY ./app /app/
+COPY ./app /home/service/app/
 
 EXPOSE 8000
 
