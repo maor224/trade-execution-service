@@ -10,4 +10,4 @@ def read_root():
     return {"message": "Trade Execution Service is up and running"}
 
 
-app.include_router(order_router, prefix="/order", tags=["Order"])
+app.include_router(order_router, prefix="/orders", tags=["Order"])
