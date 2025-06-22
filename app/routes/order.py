@@ -14,7 +14,7 @@ def market_order(
 ):
     try:
         order = alpaca_client.submit_order(order_data=market_order_request)
-        return {"message": "Order placed successfully", "order": order._raw}
+        return {"message": "Order placed successfully", "order": order}
     except Exception as e:
         return {"error": str(e), "traceback": traceback.format_exc()}
 
@@ -25,6 +25,6 @@ def limit_order(
 ):
     try:
         order = alpaca_client.submit_order(order_data=limit_order_request)
-        return {"message": "Order placed successfully", "order": order._raw}
+        return {"message": "Order placed successfully", "order": order}
     except Exception as e:
         return {"error": str(e), "traceback": traceback.format_exc()}
