@@ -53,7 +53,7 @@ def test_limit_order(fake_alpaca_client):
         "symbol": "AAPL",
         "qty": 1,
         "side": "buy",
-        "limit_price": 150.0,
+        "limit_price": 150,
         "time_in_force": "gtc",
     }
 
@@ -70,5 +70,5 @@ def test_limit_order(fake_alpaca_client):
     assert order["symbol"] == "AAPL"
     assert order["qty"] == 1
     assert order["side"] == "buy"
-    assert order["limit_price"] == 150.0
+    assert order["limit_price"] == 150
     assert order["time_in_force"] == "gtc"
