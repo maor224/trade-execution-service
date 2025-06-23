@@ -4,6 +4,7 @@ from typing import Dict, List
 class FakeAlpacaClient:
     def __init__(self):
         self.orders: List[Dict] = []
+        self.positions: List[Dict] = []
 
     def submit_order(self, order_data):
         order = {
@@ -16,3 +17,6 @@ class FakeAlpacaClient:
 
     def get_orders(self):
         return self.orders
+
+    def get_positions(self):
+        return self.positions
