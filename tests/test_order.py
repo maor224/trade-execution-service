@@ -24,6 +24,49 @@ def override_dependency(fake_alpaca_client):
 client = TestClient(app)
 
 
+def test_get_orders(fake_alpaca_client):
+    fake_alpaca_client.orders.append(
+        {
+            "symbol": "AAPL",
+            "qty": 1,
+            "side": "buy",
+            "time_in_force": "day",
+            "order_type": "market",
+        }
+    )
+    fake_alpaca_client.orders.append(
+        {
+            "symbol": "TSLA",
+            "qty": 2,
+            "side": "sell",
+            "time_in_force": "gtc",
+            "limit_price": 700,
+            "order_type": "limit",
+        }
+    )
+
+    response = client.get("/orders")
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+    assert isinstance(response_data, list)
+    assert len(response_data) == 2
+
+    assert response_data[0]["symbol"] == "AAPL"
+    assert response_data[0]["qty"] == 1
+    assert response_data[0]["side"] == "buy"
+    assert response_data[0]["time_in_force"] == "day"
+    assert response_data[0]["order_type"] == "market"
+
+    assert response_data[1]["symbol"] == "TSLA"
+    assert response_data[1]["qty"] == 2
+    assert response_data[1]["side"] == "sell"
+    assert response_data[1]["time_in_force"] == "gtc"
+    assert response_data[1]["limit_price"] == 700
+    assert response_data[1]["order_type"] == "limit"
+
+
 def test_market_order(fake_alpaca_client):
     payload = {
         "symbol": "AAPL",
