@@ -18,5 +18,5 @@ class FakeAlpacaClient:
     def get_orders(self):
         return self.orders
 
-    def get_positions(self):
+    def get_all_positions(self):
         return self.positions
