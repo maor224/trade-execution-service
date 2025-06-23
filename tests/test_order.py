@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 from app.utils.alpaca_client import get_alpaca_client
-from tests.fake_alpaca_client import FakeAlpacaClient
+from tests.fakes.fake_alpaca_client import FakeAlpacaClient
 
 
 @pytest.fixture(scope="module")
