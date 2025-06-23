@@ -24,6 +24,15 @@ def override_dependency(fake_alpaca_client):
 client = TestClient(app)
 
 
+def test_get_orders(fake_alpaca_client):
+    response = client.get("/orders")
+
+    assert response.status_code == 200
+
+    response_data = response.json()
+    assert isinstance(response_data, list)
+
+
 def test_market_order(fake_alpaca_client):
     payload = {
         "symbol": "AAPL",

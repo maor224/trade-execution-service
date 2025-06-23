@@ -13,3 +13,6 @@ class FakeAlpacaClient:
         }
         self.orders.append(order)
         return order
+
+    def get_orders(self):
+        return self.orders
